@@ -1,7 +1,6 @@
 package br.com.fuctura.entidades;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Veiculo implements Serializable {
 
@@ -10,7 +9,7 @@ public class Veiculo implements Serializable {
 	private int codVeiculo;
 	private String placa;
 	private String modelo;
-	private Date ano;
+	private int ano;
 	private float valor;
 	private TipoVeiculo tipoVeiculo;
 	private Loja codLoja;
@@ -51,10 +50,10 @@ public class Veiculo implements Serializable {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
-	public Date getAno() {
+	public int getAno() {
 		return ano;
 	}
-	public void setAno(Date ano) {
+	public void setAno(int ano) {
 		this.ano = ano;
 	}
 	

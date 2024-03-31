@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import br.com.fuctura.controle.ClienteControle;
 import br.com.fuctura.controle.LojaControle;
+import br.com.fuctura.controle.TipoVeiculoControle;
+import br.com.fuctura.controle.VeiculoControle;
 import br.com.fuctura.controle.VendedorControle;
 
 public class Menu {
@@ -13,6 +15,8 @@ public class Menu {
 		ClienteControle clienteControle = new ClienteControle();
 		LojaControle lojaControle = new LojaControle();
 		VendedorControle vendedorControle = new VendedorControle();
+		VeiculoControle veiculoControle = new VeiculoControle();
+		TipoVeiculoControle tipoVeiculoControle = new TipoVeiculoControle();
 
 		boolean menu1 = true, menu2 = true, menu3 = true;
 		int op1 = 0, op2 = 0, op3 = 0;
@@ -40,7 +44,7 @@ public class Menu {
 						
 						switch (op3) {
 						case 1: {
-							//consultar veiculo por placa
+							veiculoControle.buscar();
 							break;
 						}
 						case 2 : {
@@ -131,7 +135,7 @@ public class Menu {
 					}
 					case 5: {
 						do {
-							System.out.println("Opção 1 - Cadastrar Venda.\n"
+							System.out.println("Opção 1 - Realizar Venda.\n"
 									+ "Opção 2 - Voltar para o menu superior.");
 							op3 = scM.nextInt();
 							
@@ -175,27 +179,37 @@ public class Menu {
 					case 1: {
 						do {
 						System.out.println("Informação de veiculo");
-						System.out.println("Opção 1 - Cadastrar veículo\n"
-								+ "Opção 2 - Excluir veículo\n"
-								+ "Opção 3 - Alterar dados do veículo\n"
-								+ "Opção 4 - Voltar para o menu superior.");
+						System.out.println("Opção 1 - Cadastrar veículo.\n"
+								+ "Opção 2 - Excluir veículo.\n"
+								+ "Opção 3 - Alterar dados do veículo.\n"
+								+ "Opção 4 - Listar tipos de veiculos.\n"
+								+ "Opção 5 - Cadastra tipo de veiculo.\n"
+								+ "Opção 6 - Voltar para o menu superior.");
 						op3 = scM.nextInt();
 						
 						switch (op3) {
 						case 1: {
-							//cadastrar veiculo
+							veiculoControle.cadastra();
 							break;
 						}
 						case 2: {
-							//Excluir Veiculo
+							veiculoControle.excluir();
 							break;
 						}
 						case 3: {
 							//Alterar veiculo
 							break;
 						}
-						case 4 : {
+						case 6 : {
 							menu3 = false;
+							break;
+						}
+						case 5: {
+							tipoVeiculoControle.cadastraTipo();
+							break;
+						}
+						case 4: {
+							tipoVeiculoControle.listaTipo();
 							break;
 						}
 						default:

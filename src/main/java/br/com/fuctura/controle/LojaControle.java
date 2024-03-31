@@ -27,7 +27,7 @@ public class LojaControle {
 
 	}
 	
-	public void listarLojas() {
+	public List<Loja> listarLojas() {
 		List<Loja> listLoja = new ArrayList<Loja>();
 		System.out.println("Listando Loja");
 		
@@ -42,7 +42,19 @@ public class LojaControle {
 		System.out.println("###############################################################");
 
 		}
-
+		return listLoja;
+	}
+	
+	public List<Loja> listarLojasVeiculo() {
+		List<Loja> listLoja = new ArrayList<Loja>();
+		System.out.println("Listando Loja");
+		
+		listLoja = lDao.listarTodasLoja();
+		System.out.println("Listas de lojas: ");
+		for(Loja c : listLoja) {
+		System.out.println((listLoja.indexOf(c)+1) +" - Nome: " + c.getNomeLoja());
+		}
+		return listLoja;
 	}
 	
 	public Loja buscarLoja() {

@@ -1,18 +1,16 @@
 package br.com.fuctura.controle;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 import br.com.fuctura.dao.VeiculoDao;
-import br.com.fuctura.dao.VendedorDao;
 import br.com.fuctura.entidades.Loja;
+import br.com.fuctura.entidades.TipoVeiculo;
 import br.com.fuctura.entidades.Veiculo;
-import br.com.fuctura.entidades.Vendedor;
 
 public class VeiculoControle {
-	/*
+
 	static VeiculoDao veDao = new VeiculoDao();
 	final static Scanner scM = new Scanner(System.in);
 	final  static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -20,6 +18,9 @@ public class VeiculoControle {
 	public void cadastra() throws Exception {
 		
 		LojaControle e = new LojaControle();
+		TipoVeiculoControle t = new TipoVeiculoControle();
+		int tveiculo = 0;
+		
 		Veiculo v = new Veiculo();
 		System.out.print("Placa do Veiculo: ");
 		v.setPlaca(scM.next());
@@ -28,41 +29,43 @@ public class VeiculoControle {
 		System.out.print("Valor do veiculo: ");
 		v.setValor(scM.nextFloat());
 		System.out.print("Ano do veiculo: ");
-		String a = scM.next();
-		Date dat = sdf.parse(a);
-	    java.sql.Date ano = new java.sql.Date(dat.getTime());
-		v.setAno(ano);
-		Loja l = e.buscarLoja();
+		v.setAno(scM.nextInt());
+		List<Loja> f =  e.listarLojasVeiculo();
+		System.out.println("Qual loja o veiculo está?");
+		tveiculo = scM.nextInt();
+		Loja l = f.get(tveiculo-1);
 		v.setCodLoja(l);
+		List<TipoVeiculo> g = t.listaTipo();
+		System.out.println("Qual o tipo de veiculo?");
+		tveiculo = scM.nextInt();
+		TipoVeiculo tV = g.get(tveiculo-1);
+		v.setTipoVeiculo(tV);
 		
-		v = veDao.save(v);
-
+		 veDao.save(v);
 	}
-
+	
 	public void buscar() throws Exception{
 
-		Vendedor c = new Vendedor();
-		String nome;
+		Veiculo v = new Veiculo();
+		String placa;
 
-		System.out.println("Informe o nome do Vendedor: ");
-		nome = scM.next();
+		System.out.println("Informe a placa do veiculo: ");
+		placa = scM.next();
 
-		c = vDao.consultarNome(nome);
-		if(c.getNome()!=null) {
-		System.out.println("Nome: " + c.getNome() + " Codigo - " + c.getCodVendedor() + "\nLoja: "+c.getCodLoja().getNomeLoja());
-		}else {
-			System.out.println("Nenhum vendedor foi encontrado!");
+		v = veDao.consultarPlaca(placa.toUpperCase());
+		if(v.getPlaca()!=null) {
+		System.out.println("Placa: " + v.getPlaca() + " Categoria: " + v.getTipoVeiculo().getTipoVeiculo()
+				+ "\nAno: " +v.getAno() +" Valor: R$"+v.getValor()+ "\nLoja: "+v.getCodLoja().getNomeLoja());
 		}
-		
 
 	}
 
 	public void excluir() {
-		System.out.println("Informe o nome do vendedor: ");
-		String nome = scM.next();
-		vDao.excluirVendedor(nome);
+		System.out.println("Informe a Placa do veiculo que deseja excluir: ");
+		String placa = scM.next();
+		veDao.excluirVeiculo(placa);
 	}
-	
+	/*
 	public void atualizar() throws Exception {
 		Vendedor c = new Vendedor();
 		LojaControle lc = new LojaControle();
