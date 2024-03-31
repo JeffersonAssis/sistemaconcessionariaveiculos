@@ -1,0 +1,116 @@
+-- public.endereco definition
+
+-- Drop table
+
+-- DROP TABLE public.endereco;
+
+CREATE TABLE public.endereco (
+	cep varchar(10) NOT NULL,
+	logradouro varchar(100) NOT NULL,
+	complemento varchar(100) NULL,
+	bairro varchar(100) NOT NULL,
+	localidade varchar(100) NOT NULL,
+	uf varchar(4) NOT NULL,
+	CONSTRAINT endereco_pkey PRIMARY KEY (cep)
+);
+
+
+-- public.tipo_veiculo definition
+
+-- Drop table
+
+-- DROP TABLE public.tipo_veiculo;
+
+CREATE TABLE public.tipo_veiculo (
+	cod_tipo serial4 NOT NULL,
+	descricao varchar(50) NOT NULL UNIQUE,
+	CONSTRAINT tipo_veiculo_pkey PRIMARY KEY (cod_tipo)
+);
+
+
+-- public.cliente definition
+
+-- Drop table
+
+-- DROP TABLE public.cliente;
+
+CREATE TABLE public.cliente (
+	cod_cliente serial4 NOT NULL,
+	nome varchar(100) NOT NULL,
+	cpf varchar(15) NOT NULL UNIQUE,
+	telefone varchar(15) NOT NULL,
+	num_endereco varchar(10) NOT NULL,
+	cep_endereco varchar(15) NOT NULL,
+	CONSTRAINT cliente_pkey PRIMARY KEY (cod_cliente),
+	CONSTRAINT cliente_endereco FOREIGN KEY (cep_endereco) REFERENCES public.endereco(cep)
+);
+
+
+-- public.loja definition
+
+-- Drop table
+
+-- DROP TABLE public.loja;
+
+CREATE TABLE public.loja (
+	cod_loja serial4 NOT NULL,
+	nome_loja varchar(50) NOT NULL UNIQUE,
+	num_endereco varchar(10) NOT NULL,
+	cep_endereco varchar(15) NOT NULL,
+	CONSTRAINT loja_pkey PRIMARY KEY (cod_loja),
+	CONSTRAINT loja_endereco FOREIGN KEY (cep_endereco) REFERENCES public.endereco(cep)
+);
+
+
+-- public.veiculo definition
+
+-- Drop table
+
+-- DROP TABLE public.veiculo;
+
+CREATE TABLE public.veiculo (
+	cod_veiculo serial4 NOT NULL,
+	placa varchar(100) NOT NULL UNIQUE,
+	modelo varchar(100) NOT NULL,
+	ano date NOT NULL,
+	valor float8 NOT NULL,
+	cod_tipo int8 NOT NULL,
+	cod_loja int8 NOT NULL,
+	CONSTRAINT veiculo_pkey PRIMARY KEY (cod_veiculo),
+	CONSTRAINT veiculo_loja FOREIGN KEY (cod_loja) REFERENCES public.loja(cod_loja),
+	CONSTRAINT veiculo_tipoveiculo FOREIGN KEY (cod_tipo) REFERENCES public.tipo_veiculo(cod_tipo)
+);
+
+
+-- public.vendedor definition
+
+-- Drop table
+
+-- DROP TABLE public.vendedor;
+
+CREATE TABLE public.vendedor (
+	cod_vendedor int4 DEFAULT nextval('vendedor_cod_venddedor_seq'::regclass) NOT NULL,
+	nome varchar(100) NOT NULL,
+	cod_loja int8 NOT NULL,
+	CONSTRAINT vendedor_pkey PRIMARY KEY (cod_vendedor),
+	CONSTRAINT vendedor_loja FOREIGN KEY (cod_loja) REFERENCES public.loja(cod_loja)
+);
+
+
+-- public.venda definition
+
+-- Drop table
+
+-- DROP TABLE public.venda;
+
+CREATE TABLE public.venda (
+	cod_venda serial4 NOT NULL,
+	valor float8 NOT NULL,
+	cod_cliente int8 NOT NULL,
+	cod_veiculo int8 NOT NULL,
+	cod_vendedor int8 NOT NULL,
+	CONSTRAINT venda_pkey PRIMARY KEY (cod_venda),
+	CONSTRAINT venda_cliente FOREIGN KEY (cod_cliente) REFERENCES public.cliente(cod_cliente),
+	CONSTRAINT venda_veiculo FOREIGN KEY (cod_veiculo) REFERENCES public.veiculo(cod_veiculo),
+	CONSTRAINT venda_vendedor FOREIGN KEY (cod_vendedor) REFERENCES public.vendedor(cod_vendedor)
+);
